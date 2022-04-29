@@ -8,7 +8,6 @@
 
 import Foundation
 import CoreData
-import SwiftUI
 
 
 extension Note {
@@ -19,23 +18,18 @@ extension Note {
 
     @NSManaged public var date: Date
     @NSManaged public var id: UUID
-    @NSManaged public var images: Data?
     @NSManaged public var isLocked: Bool
     @NSManaged public var isPined: Bool
     @NSManaged public var text: String
     @NSManaged public var folder: Folder?
     @NSManaged public var image: NSSet?
-	
-	public var imagesArray: [UIImage] {
-	var imageSet = [UIImage]()
-	let set = image as? Set<NoteImage> ?? []
-		for image in set {
-			if let uiImage = UIImage(data: image.data) {
-				imageSet.append(uiImage)
+
+	public var imagesArray: [NoteImage] {
+			let set = image as? Set<NoteImage> ?? []
+			return set.sorted {
+				$0.date > $1.date
 			}
 		}
-	return imageSet
-	}
 }
 
 // MARK: Generated accessors for image

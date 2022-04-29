@@ -13,7 +13,6 @@
     <entity name="Note" representedClassName="Note" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="images" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
         <attribute name="isLocked" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="isPined" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="text" optional="YES" attributeType="String"/>
@@ -27,12 +26,13 @@
     </entity>
     <entity name="NoteImage" representedClassName="NoteImage" syncable="YES">
         <attribute name="data" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <relationship name="note" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Note" inverseName="image" inverseEntity="Note"/>
     </entity>
     <elements>
         <element name="Folder" positionX="-63" positionY="18" width="128" height="74"/>
-        <element name="Note" positionX="182.76953125" positionY="-30.13671875" width="128" height="149"/>
-        <element name="NoteImage" positionX="108" positionY="72" width="128" height="74"/>
+        <element name="Note" positionX="182.76953125" positionY="-30.13671875" width="128" height="134"/>
+        <element name="NoteImage" positionX="108" positionY="72" width="128" height="89"/>
     </elements>
 </model>

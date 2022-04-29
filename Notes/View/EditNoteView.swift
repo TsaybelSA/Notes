@@ -26,7 +26,8 @@ struct EditNoteView: View {
 		return italic == true ? font.italic() : font
 	}
 	
-	@State private var imageIsChosen = false
+	@State private var chosenImageID: UUID?
+	
 	@FocusState private var textIsFocused: Bool
 	
     var body: some View {
@@ -41,11 +42,6 @@ struct EditNoteView: View {
 							.focused($textIsFocused)
 						HStack {
 							imageOfNote
-								.onTapGesture {
-									withAnimation {
-										imageIsChosen.toggle()
-									}
-								}
 						}
 					}
 				} else {
@@ -129,21 +125,37 @@ struct EditNoteView: View {
 	var imageOfNote: some View {
 		ScrollView(.horizontal) {
 			HStack {
-				ForEach(note.imagesArray, id: \.self) { uiImage in
-					Image(uiImage: uiImage)
-						.resizable()
-						.aspectRatio(contentMode: .fit)
-						.opacity(imageIsChosen ? 0.8 : 1)
-						.padding()
-						.overlay {
-							if imageIsChosen {
-								AnimatedActionButton(title: "Delete Image") {
-									note.images = nil
-									imageIsChosen = false
+				ForEach(note.imagesArray) { noteImage in
+					if let uiImage = UIImage(data: noteImage.data) {
+						Image(uiImage: uiImage)
+							.resizable()
+							.aspectRatio(contentMode: .fit)
+							.opacity(chosenImageID == noteImage.id ? 0.8 : 1)
+							.padding()
+							.overlay {
+								VStack {
+									if noteImage.id == chosenImageID {
+
+										AnimatedActionButton(title: "Delete Image") {
+											note.removeFromImage(noteImage)
+											chosenImageID = nil
+										}
+										.borderedCaption()
+									}
 								}
-								.borderedCaption()
 							}
-						}
+							.onTapGesture {
+								withAnimation {
+									if chosenImageID == noteImage.id {
+										chosenImageID = nil
+									} else {
+										chosenImageID = noteImage.id
+									}
+								}
+							}
+
+
+					}
 				}
 			}
 		}
@@ -190,6 +202,8 @@ struct EditNoteView: View {
 	private func handlePickerImage(_ image: UIImage?) {
 		if let pickedImage = image?.jpegData(compressionQuality: 0.4) {
 			let image = NoteImage(context: context)
+			image.id = UUID()
+			image.date = Date()
 			image.data = pickedImage
 			note.addToImage(image)
 			try? context.save()

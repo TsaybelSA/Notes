@@ -21,11 +21,11 @@ extension Folder {
     @NSManaged public var notes: NSSet?
 
 	public var notesArray: [Note] {
-		let set = notes as? Set<Note> ?? []
-		return set.sorted {
-			$0.date > $1.date
+			let set = notes as? Set<Note> ?? []
+			return set.sorted {
+				$0.date > $1.date
+			}
 		}
-	}
 }
 
 // MARK: Generated accessors for notes

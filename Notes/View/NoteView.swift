@@ -52,11 +52,13 @@ struct NoteView: View, Animatable {
 	@ViewBuilder
 	func imageOfNote(_ note: Note) -> some View {
 		HStack {
-			ForEach(note.imagesArray, id: \.self) { uiImage in
-				Image(uiImage: uiImage)
-					.resizable()
-					.aspectRatio(contentMode: .fit)
-					.frame(maxHeight: 100)
+			ForEach(note.imagesArray, id: \.self) { image in
+				if let uiImage = UIImage(data: image.data) {
+					Image(uiImage: uiImage)
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.frame(maxHeight: 100)
+				}
 			}
 		}
 	}

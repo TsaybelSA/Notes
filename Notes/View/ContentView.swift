@@ -96,7 +96,11 @@ struct ContentView: View {
 		for index in indexSet {
 			withAnimation {
 				let note = folder.notesArray[index]
-				authenticate {
+				if note.isLocked {
+					authenticate {
+						folder.removeFromNotes(note)
+					}
+				} else {
 					folder.removeFromNotes(note)
 				}
 			}
