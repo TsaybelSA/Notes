@@ -18,14 +18,21 @@
         <attribute name="isPined" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="text" optional="YES" attributeType="String"/>
         <relationship name="folder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="notes" inverseEntity="Folder"/>
+        <relationship name="image" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="NoteImage" inverseName="note" inverseEntity="NoteImage"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="id"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
+    <entity name="NoteImage" representedClassName="NoteImage" syncable="YES">
+        <attribute name="data" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <relationship name="note" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Note" inverseName="image" inverseEntity="Note"/>
+    </entity>
     <elements>
         <element name="Folder" positionX="-63" positionY="18" width="128" height="74"/>
-        <element name="Note" positionX="182.76953125" positionY="-30.13671875" width="128" height="134"/>
+        <element name="Note" positionX="182.76953125" positionY="-30.13671875" width="128" height="149"/>
+        <element name="NoteImage" positionX="108" positionY="72" width="128" height="74"/>
     </elements>
 </model>

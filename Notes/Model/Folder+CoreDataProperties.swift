@@ -16,17 +16,16 @@ extension Folder {
         return NSFetchRequest<Folder>(entityName: "Folder")
     }
 
-    @NSManaged public var id: UUID?
+    @NSManaged public var id: UUID
     @NSManaged public var name: String
     @NSManaged public var notes: NSSet?
-	
+
 	public var notesArray: [Note] {
 		let set = notes as? Set<Note> ?? []
 		return set.sorted {
 			$0.date > $1.date
 		}
 	}
-
 }
 
 // MARK: Generated accessors for notes

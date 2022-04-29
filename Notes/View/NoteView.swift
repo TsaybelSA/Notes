@@ -51,17 +51,14 @@ struct NoteView: View, Animatable {
 	
 	@ViewBuilder
 	func imageOfNote(_ note: Note) -> some View {
-		if let data = note.images, let uiImage = UIImage(data: data as Data) {
-			Image(uiImage: uiImage)
-				.resizable()
-				.aspectRatio(contentMode: .fit)
-				.frame(maxHeight: 100)
+		HStack {
+			ForEach(note.imagesArray, id: \.self) { uiImage in
+				Image(uiImage: uiImage)
+					.resizable()
+					.aspectRatio(contentMode: .fit)
+					.frame(maxHeight: 100)
+			}
 		}
 	}
 }
 
-//struct NoteView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        NoteView()
-//    }
-//}

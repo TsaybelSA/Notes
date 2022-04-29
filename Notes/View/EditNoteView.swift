@@ -127,21 +127,25 @@ struct EditNoteView: View {
 	
 	@ViewBuilder
 	var imageOfNote: some View {
-		if let data = note.images, let uiImage = UIImage(data: data as Data) {
-			Image(uiImage: uiImage)
-				.resizable()
-				.aspectRatio(contentMode: .fit)
-				.opacity(imageIsChosen ? 0.8 : 1)
-				.padding()
-				.overlay {
-					if imageIsChosen {
-						AnimatedActionButton(title: "Delete Image") {
-							note.images = nil
-							imageIsChosen = false
+		ScrollView(.horizontal) {
+			HStack {
+				ForEach(note.imagesArray, id: \.self) { uiImage in
+					Image(uiImage: uiImage)
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.opacity(imageIsChosen ? 0.8 : 1)
+						.padding()
+						.overlay {
+							if imageIsChosen {
+								AnimatedActionButton(title: "Delete Image") {
+									note.images = nil
+									imageIsChosen = false
+								}
+								.borderedCaption()
+							}
 						}
-						.borderedCaption()
-					}
 				}
+			}
 		}
 	}
 	
@@ -184,9 +188,12 @@ struct EditNoteView: View {
 	
 	//MARK: note are not updating image after reuploading it
 	private func handlePickerImage(_ image: UIImage?) {
-		let pickedImage = image?.jpegData(compressionQuality: 0.5)
-		note.images = pickedImage as NSData?
-		try? context.save()
+		if let pickedImage = image?.jpegData(compressionQuality: 0.4) {
+			let image = NoteImage(context: context)
+			image.data = pickedImage
+			note.addToImage(image)
+			try? context.save()
+		}
 		imagePicker = nil
 		note.objectWillChange.send()
 	}
