@@ -8,11 +8,14 @@
 import SwiftUI
 
 struct EditNoteView: View {
+	
 	@Environment(\.managedObjectContext) var context
 	
 	@ObservedObject var note: Note
 	
 	@EnvironmentObject var fontStore: FontStore
+	
+	@EnvironmentObject var secureControl: SecureControl
 	
 	@Environment(\.dismiss) var dismiss
 	
@@ -33,7 +36,7 @@ struct EditNoteView: View {
     var body: some View {
 		NavigationView {
 			ZStack {
-				if !note.isLocked {
+				if !secureControl.isLockedState || !note.isLocked {
 					VStack {
 						TextEditor(text: $note.text)
 							.lineSpacing(3)
@@ -108,7 +111,7 @@ struct EditNoteView: View {
 					.padding(.vertical, 5)
 				Button("Remove protection") {
 					authenticate {
-						note.isLocked.toggle()
+						secureControl.changeToUnlockedState()
 					}
 				}
 				.font(.title3)
@@ -124,24 +127,22 @@ struct EditNoteView: View {
 	@ViewBuilder
 	var imageOfNote: some View {
 		ScrollView(.horizontal) {
-			HStack {
+			HStack(alignment: .center) {
 				ForEach(note.imagesArray) { noteImage in
 					if let uiImage = UIImage(data: noteImage.data) {
 						Image(uiImage: uiImage)
 							.resizable()
 							.aspectRatio(contentMode: .fit)
 							.opacity(chosenImageID == noteImage.id ? 0.8 : 1)
+							.frame(maxHeight: 200)
 							.padding()
 							.overlay {
-								VStack {
-									if noteImage.id == chosenImageID {
-
-										AnimatedActionButton(title: "Delete Image") {
-											note.removeFromImage(noteImage)
-											chosenImageID = nil
-										}
-										.borderedCaption()
+								if noteImage.id == chosenImageID {
+									AnimatedActionButton(title: "Delete Image") {
+										note.removeFromImage(noteImage)
+										chosenImageID = nil
 									}
+									.borderedCaption()
 								}
 							}
 							.onTapGesture {
@@ -153,13 +154,12 @@ struct EditNoteView: View {
 									}
 								}
 							}
-
-
 					}
 				}
 			}
 		}
 	}
+	
 	
 	var buttonsList: some View {
 		HStack {

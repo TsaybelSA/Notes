@@ -70,10 +70,11 @@ func authenticate(ifSucceed: @escaping () -> Void) {
 		context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, authenticationError in
 			if success {
 				//authenticated successfully
-//				isUnlocked = true
+				
 				ifSucceed()
 			} else {
 				//there was a problem
+				
 			}
 		}
 	} else {

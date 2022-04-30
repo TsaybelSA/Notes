@@ -29,6 +29,7 @@
 		17A774E2281BE5590067F2B3 /* Folder+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A774DC281BE5590067F2B3 /* Folder+CoreDataProperties.swift */; };
 		17A774E3281BE5590067F2B3 /* Note+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A774DD281BE5590067F2B3 /* Note+CoreDataClass.swift */; };
 		17A774E4281BE5590067F2B3 /* Note+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A774DE281BE5590067F2B3 /* Note+CoreDataProperties.swift */; };
+		17A77502281C25D50067F2B3 /* SecureControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A77501281C25D50067F2B3 /* SecureControl.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +56,7 @@
 		17A774DC281BE5590067F2B3 /* Folder+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folder+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		17A774DD281BE5590067F2B3 /* Note+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Note+CoreDataClass.swift"; sourceTree = "<group>"; };
 		17A774DE281BE5590067F2B3 /* Note+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Note+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		17A77501281C25D50067F2B3 /* SecureControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureControl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +127,7 @@
 		17A77494281ADBB00067F2B3 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				17A77501281C25D50067F2B3 /* SecureControl.swift */,
 				17A77483281ADB8D0067F2B3 /* FontStore.swift */,
 			);
 			path = ViewModel;
@@ -227,6 +230,7 @@
 				17A774E4281BE5590067F2B3 /* Note+CoreDataProperties.swift in Sources */,
 				17A7747E281AD9A00067F2B3 /* UtilityView.swift in Sources */,
 				17A774DF281BE5590067F2B3 /* NoteImage+CoreDataClass.swift in Sources */,
+				17A77502281C25D50067F2B3 /* SecureControl.swift in Sources */,
 				17A77453281AC9E40067F2B3 /* NotesApp.swift in Sources */,
 				17A77491281ADBA00067F2B3 /* Camera.swift in Sources */,
 				17A774E2281BE5590067F2B3 /* Folder+CoreDataProperties.swift in Sources */,

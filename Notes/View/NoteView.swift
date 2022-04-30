@@ -9,16 +9,20 @@ import SwiftUI
 
 struct NoteView: View, Animatable {
 	
+	@ObservedObject var note: Note
+	
+	@EnvironmentObject var secureControl: SecureControl
+	
 	init(_ note: Note) {
 		self.note = note
 	}
 	
-	@ObservedObject var note: Note
-
-	
 	var body: some View {
-		if !note.isLocked {
+		if !note.isLocked || !secureControl.isLockedState {
 			HStack {
+				if note.isLocked {
+					Image(systemName: "lock.open")
+				}
 				VStack(alignment: .leading) {
 					Text(note.text)
 						.font(.body)

@@ -10,19 +10,19 @@ import CoreMIDI
 
 struct ContentView: View {
 	@Environment(\.managedObjectContext) var viewContext
-	
+		
+	@Environment(\.editMode) var editMode
+		
 	@EnvironmentObject var fontStore: FontStore
+	
+	@EnvironmentObject var secureControl: SecureControl
 	
 	@FetchRequest(sortDescriptors: []) var folders: FetchedResults<Folder>
 		
 	@State private var searchText = ""
 	
-	@Environment(\.editMode) var editMode
-	
 	@State private var editingNote: Note?
 			
-	
-	//MARK: fix searching
 	var body: some View {
 		NavigationView {
 			List {
@@ -96,9 +96,10 @@ struct ContentView: View {
 		for index in indexSet {
 			withAnimation {
 				let note = folder.notesArray[index]
-				if note.isLocked {
+				if secureControl.isLockedState {
 					authenticate {
 						folder.removeFromNotes(note)
+						secureControl.changeToUnlockedState()
 					}
 				} else {
 					folder.removeFromNotes(note)
