@@ -68,9 +68,7 @@ struct EditNoteView: View {
 						}
 					}
 					
-					AnimatedActionButton(systemImage: "ellipsis.circle") {
-					}
-					.contextMenu {
+					Menu {
 						if Camera.isAvailable {
 							AnimatedActionButton(title: "Take a Photo", systemImage: "camera") {
 								imagePicker = .camera
@@ -84,6 +82,8 @@ struct EditNoteView: View {
 						DeleteButton(note: note) {
 							dismiss()
 						}
+					} label: {
+						Image(systemName: "ellipsis.circle")
 					}
 				}
 				ToolbarItemGroup(placement: .keyboard) {

@@ -115,7 +115,7 @@ struct ContentView: View {
 		let unsorted = Folder(context: viewContext)
 		unsorted.name = "Notes"
 		let newNote = Note(context: viewContext)
-		newNote.text = "Welcome to Notes. "
+		newNote.text = "Welcome to Notes. You can open context menu by long pressing on note."
 		try? viewContext.save()
 	}
 	
