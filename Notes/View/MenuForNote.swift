@@ -47,6 +47,7 @@ struct MenuForNote: View {
 		DeleteButton(note: note)
 	}
 }
+
 struct DeleteButton: View {
 	@Environment(\.managedObjectContext) var context
 	@FetchRequest(sortDescriptors: []) var folders: FetchedResults<Folder>

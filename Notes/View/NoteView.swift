@@ -27,7 +27,7 @@ struct NoteView: View, Animatable {
 					Text(note.text)
 						.font(.body)
 						.lineLimit(3)
-					Text(convertDateToDateString(date: note.date, format:"dd.MM.yyyy"))
+					Text(note.date.formatted(date: .long, time: .omitted))
 						.font(.body)
 						.fontWeight(.light)
 				}

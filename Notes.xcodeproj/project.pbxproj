@@ -15,9 +15,7 @@
 		17A77480281ADA000067F2B3 /* UtilityExtentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A7747F281ADA000067F2B3 /* UtilityExtentions.swift */; };
 		17A77482281ADA210067F2B3 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A77481281ADA210067F2B3 /* DataController.swift */; };
 		17A77484281ADB8D0067F2B3 /* FontStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A77483281ADB8D0067F2B3 /* FontStore.swift */; };
-		17A7748C281ADBA00067F2B3 /* FlexibleSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A77485281ADBA00067F2B3 /* FlexibleSheet.swift */; };
 		17A7748D281ADBA00067F2B3 /* MenuForNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A77486281ADBA00067F2B3 /* MenuForNote.swift */; };
-		17A7748E281ADBA00067F2B3 /* FilteredList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A77487281ADBA00067F2B3 /* FilteredList.swift */; };
 		17A7748F281ADBA00067F2B3 /* PhotoLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A77488281ADBA00067F2B3 /* PhotoLibrary.swift */; };
 		17A77490281ADBA00067F2B3 /* EditNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A77489281ADBA00067F2B3 /* EditNoteView.swift */; };
 		17A77491281ADBA00067F2B3 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A7748A281ADBA00067F2B3 /* Camera.swift */; };
@@ -42,9 +40,7 @@
 		17A7747F281ADA000067F2B3 /* UtilityExtentions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityExtentions.swift; sourceTree = "<group>"; };
 		17A77481281ADA210067F2B3 /* DataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		17A77483281ADB8D0067F2B3 /* FontStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontStore.swift; sourceTree = "<group>"; };
-		17A77485281ADBA00067F2B3 /* FlexibleSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlexibleSheet.swift; sourceTree = "<group>"; };
 		17A77486281ADBA00067F2B3 /* MenuForNote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuForNote.swift; sourceTree = "<group>"; };
-		17A77487281ADBA00067F2B3 /* FilteredList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilteredList.swift; sourceTree = "<group>"; };
 		17A77488281ADBA00067F2B3 /* PhotoLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibrary.swift; sourceTree = "<group>"; };
 		17A77489281ADBA00067F2B3 /* EditNoteView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditNoteView.swift; sourceTree = "<group>"; };
 		17A7748A281ADBA00067F2B3 /* Camera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
@@ -140,8 +136,6 @@
 				17A7748B281ADBA00067F2B3 /* NoteView.swift */,
 				17A77486281ADBA00067F2B3 /* MenuForNote.swift */,
 				17A77489281ADBA00067F2B3 /* EditNoteView.swift */,
-				17A77485281ADBA00067F2B3 /* FlexibleSheet.swift */,
-				17A77487281ADBA00067F2B3 /* FilteredList.swift */,
 				17A77488281ADBA00067F2B3 /* PhotoLibrary.swift */,
 				17A7748A281ADBA00067F2B3 /* Camera.swift */,
 			);
@@ -220,12 +214,10 @@
 			files = (
 				17A774E1281BE5590067F2B3 /* Folder+CoreDataClass.swift in Sources */,
 				17A77498281ADC630067F2B3 /* NotesBase.xcdatamodeld in Sources */,
-				17A7748C281ADBA00067F2B3 /* FlexibleSheet.swift in Sources */,
 				17A77482281ADA210067F2B3 /* DataController.swift in Sources */,
 				17A77490281ADBA00067F2B3 /* EditNoteView.swift in Sources */,
 				17A7748F281ADBA00067F2B3 /* PhotoLibrary.swift in Sources */,
 				17A774E0281BE5590067F2B3 /* NoteImage+CoreDataProperties.swift in Sources */,
-				17A7748E281ADBA00067F2B3 /* FilteredList.swift in Sources */,
 				17A77455281AC9E40067F2B3 /* ContentView.swift in Sources */,
 				17A774E4281BE5590067F2B3 /* Note+CoreDataProperties.swift in Sources */,
 				17A7747E281AD9A00067F2B3 /* UtilityView.swift in Sources */,
@@ -370,6 +362,9 @@
 				DEVELOPMENT_TEAM = XY2J735A6H;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "The media library can be used to add image to your note.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "The camera can be used to add photo to your note.";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Use Face ID to limit access to the notes.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -399,6 +394,9 @@
 				DEVELOPMENT_TEAM = XY2J735A6H;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "The media library can be used to add image to your note.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "The camera can be used to add photo to your note.";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Use Face ID to limit access to the notes.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

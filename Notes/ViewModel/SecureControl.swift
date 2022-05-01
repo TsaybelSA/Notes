@@ -9,15 +9,25 @@ import SwiftUI
 
 @MainActor
 class SecureControl: ObservableObject {
+
+	private(set) var wasUnlockedInCurrentSession = false
 	
 	private(set) var isLockedState = true {
 		didSet {
+			if isLockedState == false {
+				wasUnlockedInCurrentSession = true
+			}
+			print("changed loskState to \(isLockedState)")
 			Task {
 				await MainActor.run {
 					objectWillChange.send()
 				}
 			}
 		}
+	}
+	
+	func currentSessionIsOver() {
+		wasUnlockedInCurrentSession = false
 	}
 	
 	func changeToLockedState() {

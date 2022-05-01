@@ -29,7 +29,7 @@ struct EditNoteView: View {
 		return italic == true ? font.italic() : font
 	}
 	
-	@State private var chosenImageID: UUID?
+	@State private var selectedImageID: UUID?
 	
 	@FocusState private var textIsFocused: Bool
 	
@@ -146,24 +146,24 @@ struct EditNoteView: View {
 						Image(uiImage: uiImage)
 							.resizable()
 							.aspectRatio(contentMode: .fit)
-							.opacity(chosenImageID == noteImage.id ? 0.8 : 1)
+							.opacity(selectedImageID == noteImage.id ? 0.8 : 1)
 							.frame(maxHeight: 200)
 							.padding()
 							.overlay {
-								if noteImage.id == chosenImageID {
+								if noteImage.id == selectedImageID {
 									AnimatedActionButton(title: "Delete Image") {
 										note.removeFromImage(noteImage)
-										chosenImageID = nil
+										selectedImageID = nil
 									}
 									.borderedCaption()
 								}
 							}
 							.onTapGesture {
 								withAnimation {
-									if chosenImageID == noteImage.id {
-										chosenImageID = nil
+									if selectedImageID == noteImage.id {
+										selectedImageID = nil
 									} else {
-										chosenImageID = noteImage.id
+										selectedImageID = noteImage.id
 									}
 								}
 							}

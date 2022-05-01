@@ -75,8 +75,6 @@ struct ContentView: View {
 			.searchable(text: $searchText)
 			.navigationTitle("My Notes")
 		}
-
-
 	}
 	
 	private func filterNotes(_ notesArray: [Note] , by searchedText: String) -> [Note] {
@@ -115,7 +113,12 @@ struct ContentView: View {
 		let unsorted = Folder(context: viewContext)
 		unsorted.name = "Notes"
 		let newNote = Note(context: viewContext)
-		newNote.text = "Welcome to Notes. You can open context menu by long pressing on note."
+		newNote.text = "Welcome to Notes. To create new note tap icon in the right corner. You can open context menu by long pressing on note."
+		newNote.date = Date()
+		newNote.id = UUID()
+		newNote.isPined = false
+		newNote.isLocked = false
+		newNote.folder = unsorted
 		try? viewContext.save()
 	}
 	
