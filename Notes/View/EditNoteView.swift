@@ -49,7 +49,7 @@ struct EditNoteView: View {
 					}
 				} else {
 					lockedNote
-						.transition(AnyTransition.scale)
+						.transition(AnyTransition.opacity.animation(.spring()))
 				}
 				
 			}
@@ -58,6 +58,16 @@ struct EditNoteView: View {
 			}
 			.toolbar {
 				ToolbarItemGroup(placement: .navigationBarTrailing) {
+					AnimatedActionButton(systemImage: secureControl.isLockedState ? "lock": "lock.open") {
+						if secureControl.isLockedState {
+							authenticate {
+								secureControl.changeToUnlockedState()
+							}
+						} else {
+							secureControl.changeToLockedState()
+						}
+					}
+					
 					AnimatedActionButton(systemImage: "ellipsis.circle") {
 					}
 					.contextMenu {
@@ -70,6 +80,9 @@ struct EditNoteView: View {
 							AnimatedActionButton(title: "Chose a Photo", systemImage: "photo") {
 								imagePicker = .library
 							}
+						}
+						DeleteButton(note: note) {
+							dismiss()
 						}
 					}
 				}
@@ -159,7 +172,6 @@ struct EditNoteView: View {
 			}
 		}
 	}
-	
 	
 	var buttonsList: some View {
 		HStack {

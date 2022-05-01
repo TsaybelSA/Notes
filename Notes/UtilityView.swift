@@ -23,12 +23,12 @@ extension View {
 }
 
 struct AnimatedActionButton: View {
+	var role: ButtonRole? = nil
 	var title: String? = nil
 	var systemImage: String? = nil
 	let action: () -> Void
-	
 	var body: some View {
-		Button {
+		Button (role: role) {
 			withAnimation {
 				action()
 			}

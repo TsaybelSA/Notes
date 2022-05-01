@@ -96,7 +96,7 @@ struct ContentView: View {
 		for index in indexSet {
 			withAnimation {
 				let note = folder.notesArray[index]
-				if secureControl.isLockedState {
+				if note.isLocked && secureControl.isLockedState {
 					authenticate {
 						folder.removeFromNotes(note)
 						secureControl.changeToUnlockedState()
@@ -114,6 +114,8 @@ struct ContentView: View {
 		pined.name = "Pined"
 		let unsorted = Folder(context: viewContext)
 		unsorted.name = "Notes"
+		let newNote = Note(context: viewContext)
+		newNote.text = "Welcome to Notes. "
 		try? viewContext.save()
 	}
 	

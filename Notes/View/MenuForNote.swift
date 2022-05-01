@@ -14,7 +14,7 @@ struct MenuForNote: View {
 
 	@FetchRequest(sortDescriptors: []) var folders: FetchedResults<Folder>
 	
-	var note: Note
+	@ObservedObject var note: Note
 	
 	init(_ note: Note) {
 		self.note = note
@@ -31,17 +31,6 @@ struct MenuForNote: View {
 			}
 			try? context.save()
 		}
-
-		AnimatedActionButton(title: "Delete", systemImage: "trash") {
-			if secureControl.isLockedState {
-				authenticate {
-					deleteNote()
-					secureControl.changeToUnlockedState()
-				}
-			} else {
-				deleteNote()
-			}
-		}
 		
 		AnimatedActionButton(title: note.isLocked ? "Remove protection" : "Install Protection", systemImage: note.isLocked ? "lock.open": "lock") {
 			if secureControl.isLockedState {
@@ -53,6 +42,32 @@ struct MenuForNote: View {
 				note.isLocked.toggle()
 			}
 			try? context.save()
+		}
+		
+		DeleteButton(note: note)
+	}
+}
+struct DeleteButton: View {
+	@Environment(\.managedObjectContext) var context
+	@FetchRequest(sortDescriptors: []) var folders: FetchedResults<Folder>
+	@EnvironmentObject var secureControl: SecureControl
+	
+	@ObservedObject var note: Note
+	var action: (() -> Void)? = nil
+	
+	var body: some View {
+		AnimatedActionButton(role: .destructive, title: "Delete", systemImage: "trash") {
+			if note.isLocked && secureControl.isLockedState {
+				authenticate {
+					deleteNote()
+					secureControl.changeToUnlockedState()
+				}
+			} else {
+				deleteNote()
+			}
+			if let action = action {
+				action()
+			}
 		}
     }
 	
