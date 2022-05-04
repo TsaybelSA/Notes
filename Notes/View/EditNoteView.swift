@@ -67,23 +67,24 @@ struct EditNoteView: View {
 							secureControl.changeToLockedState()
 						}
 					}
-					
-					Menu {
-						if Camera.isAvailable {
-							AnimatedActionButton(title: "Take a Photo", systemImage: "camera") {
-								imagePicker = .camera
+					if !secureControl.isLockedState {
+						Menu {
+							if Camera.isAvailable {
+								AnimatedActionButton(title: "Take a Photo", systemImage: "camera") {
+									imagePicker = .camera
+								}
 							}
-						}
-						if PhotoLibrary.isAvailable {
-							AnimatedActionButton(title: "Chose a Photo", systemImage: "photo") {
-								imagePicker = .library
+							if PhotoLibrary.isAvailable {
+								AnimatedActionButton(title: "Chose a Photo", systemImage: "photo") {
+									imagePicker = .library
+								}
 							}
+							DeleteButton(note: note) {
+								dismiss()
+							}
+						} label: {
+							Image(systemName: "ellipsis.circle")
 						}
-						DeleteButton(note: note) {
-							dismiss()
-						}
-					} label: {
-						Image(systemName: "ellipsis.circle")
 					}
 				}
 				ToolbarItemGroup(placement: .keyboard) {

@@ -24,7 +24,7 @@ struct NoteView: View, Animatable {
 					Image(systemName: "lock.open")
 				}
 				VStack(alignment: .leading) {
-					Text(note.text)
+					Text(AttributedString(note.text))
 						.font(.body)
 						.lineLimit(3)
 					Text(note.date.formatted(date: .long, time: .omitted))

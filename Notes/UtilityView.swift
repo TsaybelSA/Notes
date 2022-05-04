@@ -13,7 +13,7 @@ extension View {
 		self.toolbar {
 			ToolbarItem(placement: .navigationBarLeading) {
 				if let dismiss = dismiss {
-					Button("Save") {
+					Button("Close") {
 						dismiss()
 					}
 				}
