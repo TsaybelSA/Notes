@@ -22,40 +22,32 @@ struct ContentView: View {
 	@State private var searchText = ""
 	
 	@State private var editingNote: Note?
+	
+	@State private var showingGrid = true
 			
 	var body: some View {
 		NavigationView {
-			List {
-				ForEach(folders.reversed(), id:\.self) { folder in
-					if !folder.notesArray.isEmpty {
-						Section(header: Text(folder.name)) {
-							ForEach(filterNotes(folder.notesArray, by: searchText)) { note in
-								NoteView(note)
-								.onTapGesture {
-									withAnimation {
-										editingNote = note
-										editMode?.wrappedValue = .inactive
-									}
-								}
-								.contextMenu {
-									MenuForNote(note)
-								}
-							}
-							.onDelete { indexSet in
-								deleteNotes(with: indexSet, from: folder)
-							}
-							
-						}
-					}
+			ZStack {
+				if showingGrid {
+					GridLayout(searchText: $searchText, folders: folders)
+						.transition(.asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .trailing)))
+				} else {
+					ListLayout(searchText: $searchText, folders: folders)
+						.transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
 				}
-
 			}
+			.searchable(text: $searchText)
+			.navigationTitle("My Notes")
 			.toolbar {
 				ToolbarItem(placement: .navigationBarTrailing) {
-					EditButton()
+					showingGrid ? nil : EditButton()
+				}
+				ToolbarItem(placement: .navigationBarLeading) {
+					AnimatedActionButton(systemImage: showingGrid ? "list.dash" : "square.grid.2x2") {
+						showingGrid.toggle()
+					}
 				}
 				ToolbarItemGroup(placement: .bottomBar) {
-					
 					Text(countAmountOfNotes())
 					AnimatedActionButton(systemImage: "square.and.pencil") {
 						createNewNote()
@@ -72,12 +64,17 @@ struct ContentView: View {
 			.fullScreenCover(item: $editingNote) { note in
 				EditNoteView(note: note)
 			}
-			.searchable(text: $searchText)
-			.navigationTitle("My Notes")
 		}
 	}
 	
-	private func filterNotes(_ notesArray: [Note] , by searchedText: String) -> [Note] {
+	
+	
+	
+//	var listLayout: some View {
+//
+//	}
+	
+	func filterNotes(_ notesArray: [Note] , by searchedText: String) -> [Note] {
 		notesArray.filter({ $0.text.lowercased().contains(searchedText.lowercased()) || searchedText == "" })
 	}
 	
@@ -90,22 +87,7 @@ struct ContentView: View {
 		return notesCount
 	}
 	
-	private func deleteNotes(with indexSet: IndexSet, from folder: Folder) {
-		for index in indexSet {
-			withAnimation {
-				let note = folder.notesArray[index]
-				if note.isLocked && secureControl.isLockedState {
-					authenticate {
-						folder.removeFromNotes(note)
-						secureControl.changeToUnlockedState()
-					}
-				} else {
-					folder.removeFromNotes(note)
-				}
-			}
-		}
-		try? viewContext.save()
-	}
+
 	
 	private func createFirstFolders() {
 		let pined = Folder(context: viewContext)

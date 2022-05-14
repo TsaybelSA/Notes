@@ -12,16 +12,20 @@ class SecureControl: ObservableObject {
 
 	private(set) var wasUnlockedInCurrentSession = false
 	
+	//not using @Published,  because swift complains that "Publishing changes from background threads"
+
 	private(set) var isLockedState = true {
 		didSet {
 			if isLockedState == false {
 				wasUnlockedInCurrentSession = true
 			}
 			print("changed loskState to \(isLockedState)")
+				
 			Task {
 				await MainActor.run {
 					objectWillChange.send()
 				}
+				
 			}
 		}
 	}

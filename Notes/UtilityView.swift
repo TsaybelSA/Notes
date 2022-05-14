@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import LocalAuthentication
 
 extension View {
 	func dismissableToolbar (_ dismiss: (() -> Void)?) -> some View {
@@ -33,14 +32,18 @@ struct AnimatedActionButton: View {
 				action()
 			}
 		} label: {
-			if title != nil && systemImage != nil {
-				Label(title!, systemImage: systemImage!)
-			} else if title != nil {
-				Text(title!)
-			} else if systemImage != nil {
-				Image(systemName: systemImage!)
+			Group {
+				if title != nil && systemImage != nil {
+					Label(title!, systemImage: systemImage!)
+				} else if title != nil {
+					Text(title!)
+				} else if systemImage != nil {
+					Image(systemName: systemImage!)
+				}
 			}
+			.foregroundColor(Color("ButtonsColor"))
 		}
+		
 	}
 }
 
@@ -61,24 +64,3 @@ extension View {
 	}
 }
 
-func authenticate(ifSucceed: @escaping () -> Void) {
-	let context = LAContext()
-	var error: NSError?
-	if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-		let reason = "We need it to control access to notes"
-		
-		context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, authenticationError in
-			if success {
-				//authenticated successfully
-				
-				ifSucceed()
-			} else {
-				//there was a problem
-				
-			}
-		}
-	} else {
-		//no biometrics
-		
-	}
-}

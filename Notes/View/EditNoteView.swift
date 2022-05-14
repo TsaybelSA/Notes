@@ -35,23 +35,15 @@ struct EditNoteView: View {
 	
     var body: some View {
 		NavigationView {
-			ZStack {
-				if !secureControl.isLockedState || !note.isLocked {
-					VStack {
-						TextEditor(text: $note.text)
-							.lineSpacing(3)
-							.font(displayFont)
-							.padding()
-							.focused($textIsFocused)
-						HStack {
-							imageOfNote
-						}
+			ScrollView {
+				ZStack {
+					if !secureControl.isLockedState || !note.isLocked {
+						unlockedNote
+					} else {
+						lockedNote
+							.transition(AnyTransition.opacity.animation(.spring()))
 					}
-				} else {
-					lockedNote
-						.transition(AnyTransition.opacity.animation(.spring()))
 				}
-				
 			}
 			.dismissableToolbar() {
 				dismiss()
@@ -67,7 +59,7 @@ struct EditNoteView: View {
 							secureControl.changeToLockedState()
 						}
 					}
-					if !secureControl.isLockedState {
+					if !secureControl.isLockedState || !note.isLocked {
 						Menu {
 							if Camera.isAvailable {
 								AnimatedActionButton(title: "Take a Photo", systemImage: "camera") {
@@ -114,6 +106,20 @@ struct EditNoteView: View {
 		}
 	}
 	
+	var unlockedNote: some View {
+		VStack {
+			TextEditor(text: $note.text)
+				.lineSpacing(3)
+				.font(displayFont)
+				.padding()
+				.focused($textIsFocused)
+			Spacer()
+//			HStack {
+				imagesOfNote
+//			}
+		}
+	}
+	
 	var lockedNote: some View {
 		ZStack {
 			VStack {
@@ -139,17 +145,17 @@ struct EditNoteView: View {
 	}
 	
 	@ViewBuilder
-	var imageOfNote: some View {
+	var imagesOfNote: some View {
 		ScrollView(.horizontal) {
-			HStack(alignment: .center) {
+			HStack(alignment: .bottom, spacing: 1) {
 				ForEach(note.imagesArray) { noteImage in
 					if let uiImage = UIImage(data: noteImage.data) {
 						Image(uiImage: uiImage)
 							.resizable()
-							.aspectRatio(contentMode: .fit)
+							.scaledToFit()
 							.opacity(selectedImageID == noteImage.id ? 0.8 : 1)
-							.frame(maxHeight: 200)
-							.padding()
+							.frame(width: 300)
+							.padding(.horizontal, 2)
 							.overlay {
 								if noteImage.id == selectedImageID {
 									AnimatedActionButton(title: "Delete Image") {
