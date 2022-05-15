@@ -27,7 +27,7 @@ struct GridLayout: View {
 									NavigationLink {
 										EditNoteView(note: note)
 									} label: {
-										gridLayoutNote(note, with: geo)
+										gridLayoutNote(note, from: folder, with: geo)
 											.foregroundColor(.primary)
 									}
 									.contextMenu {
@@ -46,28 +46,29 @@ struct GridLayout: View {
 	}
 	
 	@ViewBuilder
-	func gridLayoutNote(_ note: Note, with geo: GeometryProxy) -> some View {
+	func gridLayoutNote(_ note: Note, from folder : Folder, with geo: GeometryProxy) -> some View {
 		Group {
 			if !note.isLocked || !secureControl.isLockedState {
-				VStack {
-					HStack {
+				HStack {
+					VStack {
 						if note.isLocked {
 							Image(systemName: "lock.open")
 						}
 						Text(note.text)
 							.font(.body)
 							.lineLimit(3)
+							.multilineTextAlignment(.leading)
 						Text(note.date.formatted(date: .long, time: .omitted))
-							.font(.body)
+							.font(.caption)
 							.fontWeight(.light)
-					}
-					HStack {
-						ForEach(note.imagesArray, id: \.self) { image in
-							if let uiImage = UIImage(data: image.data) {
-								Image(uiImage: uiImage)
-									.resizable()
-									.aspectRatio(contentMode: .fit)
-									.frame(maxHeight: 100)
+						HStack {
+							ForEach(note.imagesArray, id: \.self) { image in
+								if let uiImage = UIImage(data: image.data) {
+									Image(uiImage: uiImage)
+										.resizable()
+										.aspectRatio(contentMode: .fit)
+										.frame(maxHeight: 100)
+								}
 							}
 						}
 					}
@@ -81,7 +82,7 @@ struct GridLayout: View {
 				.padding()
 			}
 		}
-		.frame(width: geo.size.width * 0.4)
+		.frame(width: geo.size.width * 0.45)
 		.background(.thickMaterial)
 		.clipShape(RoundedRectangle(cornerRadius: 10))
 		.overlay {

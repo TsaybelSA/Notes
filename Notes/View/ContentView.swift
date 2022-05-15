@@ -23,7 +23,7 @@ struct ContentView: View {
 	
 	@State private var editingNote: Note?
 	
-	@State private var showingGrid = true
+	@State private var showingGrid = false
 			
 	var body: some View {
 		NavigationView {
@@ -67,12 +67,6 @@ struct ContentView: View {
 		}
 	}
 	
-	
-	
-	
-//	var listLayout: some View {
-//
-//	}
 	
 	func filterNotes(_ notesArray: [Note] , by searchedText: String) -> [Note] {
 		notesArray.filter({ $0.text.lowercased().contains(searchedText.lowercased()) || searchedText == "" })

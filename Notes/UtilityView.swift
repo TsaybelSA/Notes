@@ -41,7 +41,6 @@ struct AnimatedActionButton: View {
 					Image(systemName: systemImage!)
 				}
 			}
-			.foregroundColor(Color("ButtonsColor"))
 		}
 		
 	}

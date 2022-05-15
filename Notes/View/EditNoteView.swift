@@ -34,20 +34,20 @@ struct EditNoteView: View {
 	@FocusState private var textIsFocused: Bool
 	
     var body: some View {
-		NavigationView {
+		GeometryReader { geo in
 			ScrollView {
-				ZStack {
+				VStack(alignment: .trailing) {
 					if !secureControl.isLockedState || !note.isLocked {
-						unlockedNote
+						unlockedNote(with: geo)
 					} else {
 						lockedNote
 							.transition(AnyTransition.opacity.animation(.spring()))
 					}
 				}
+				.frame(alignment: .center)
 			}
-			.dismissableToolbar() {
-				dismiss()
-			}
+			.navigationTitle(note.isLocked ? "" : "Edit Note")
+			.navigationBarTitleDisplayMode(.inline)
 			.toolbar {
 				ToolbarItemGroup(placement: .navigationBarTrailing) {
 					AnimatedActionButton(systemImage: secureControl.isLockedState ? "lock": "lock.open") {
@@ -80,7 +80,7 @@ struct EditNoteView: View {
 					}
 				}
 				ToolbarItemGroup(placement: .keyboard) {
-					buttonsList
+					keyboardButtons
 				}
 			}
 			
@@ -101,61 +101,52 @@ struct EditNoteView: View {
 				 saveNote()
 				 saveFont(withSize: fontSize, bold: bold, italic: italic)
 			 }
-			 .navigationTitle(note.isLocked ? "" : "Edit Note")
-
 		}
 	}
 	
-	var unlockedNote: some View {
+	func unlockedNote(with geo: GeometryProxy) -> some View {
 		VStack {
 			TextEditor(text: $note.text)
 				.lineSpacing(3)
 				.font(displayFont)
 				.padding()
 				.focused($textIsFocused)
-			Spacer()
-//			HStack {
+				.frame(minHeight: geo.size.height * 0.7, maxHeight: .infinity)
+			if !note.imagesArray.isEmpty {
+				lineDivider
 				imagesOfNote
-//			}
+					.frame(maxHeight: geo.size.height * 0.25)
+			}
 		}
 	}
 	
 	var lockedNote: some View {
-		ZStack {
-			VStack {
-				Spacer()
-				Image(systemName: "lock")
-					.font(.largeTitle)
-				Text("Note is protected")
-					.font(.title3)
-					.padding(.vertical, 5)
-				Button("Remove protection") {
-					authenticate {
-						secureControl.changeToUnlockedState()
-					}
-				}
+		VStack {
+			Image(systemName: "lock")
+				.font(.largeTitle)
+			Text("Note is protected")
 				.font(.title3)
 				.padding(.vertical, 5)
-				Spacer()
+			Button("Remove protection") {
+				authenticate {
+					secureControl.changeToUnlockedState()
+				}
 			}
+			.font(.title3)
 		}
-		.frame(maxWidth: .infinity, maxHeight: .infinity)
-		.background(.ultraThickMaterial)
-
+		.padding()
 	}
 	
-	@ViewBuilder
 	var imagesOfNote: some View {
 		ScrollView(.horizontal) {
-			HStack(alignment: .bottom, spacing: 1) {
+			HStack(alignment: .bottom, spacing: 10) {
 				ForEach(note.imagesArray) { noteImage in
 					if let uiImage = UIImage(data: noteImage.data) {
 						Image(uiImage: uiImage)
 							.resizable()
 							.scaledToFit()
 							.opacity(selectedImageID == noteImage.id ? 0.8 : 1)
-							.frame(width: 300)
-							.padding(.horizontal, 2)
+							.padding(.horizontal, 10)
 							.overlay {
 								if noteImage.id == selectedImageID {
 									AnimatedActionButton(title: "Delete Image") {
@@ -178,9 +169,17 @@ struct EditNoteView: View {
 				}
 			}
 		}
+		.padding(.bottom)
 	}
 	
-	var buttonsList: some View {
+	var lineDivider: some View {
+		Rectangle()
+			.frame(height: 2)
+			.foregroundColor(.gray)
+			.padding(.vertical)
+	}
+	
+	var keyboardButtons: some View {
 		HStack {
 			Toggle(isOn: $bold) {
 				Image(systemName: "bold")
