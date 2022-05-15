@@ -9,12 +9,12 @@ import SwiftUI
 
 struct EditNoteView: View {
 	
-	@Environment(\.managedObjectContext) var context
+	@Environment(\.managedObjectContext) var viewContext
+	@FetchRequest(sortDescriptors: []) var folders: FetchedResults<Folder>
 	
 	@ObservedObject var note: Note
 	
 	@EnvironmentObject var fontStore: FontStore
-	
 	@EnvironmentObject var secureControl: SecureControl
 	
 	@Environment(\.dismiss) var dismiss
@@ -219,15 +219,17 @@ struct EditNoteView: View {
 	//MARK: note are not updating image after reuploading it
 	private func handlePickerImage(_ image: UIImage?) {
 		if let pickedImage = image?.jpegData(compressionQuality: 0.4) {
-			let image = NoteImage(context: context)
+			let image = NoteImage(context: viewContext)
 			image.id = UUID()
 			image.date = Date()
 			image.data = pickedImage
 			note.addToImage(image)
-			try? context.save()
+			if viewContext.hasChanges {
+				try? viewContext.save()
+				note.objectWillChange.send()
+			}
 		}
 		imagePicker = nil
-		note.objectWillChange.send()
 	}
 						   
 	private func saveFont(withSize fontSize: Int, bold: Bool, italic: Bool) {
@@ -235,8 +237,34 @@ struct EditNoteView: View {
 	}
 	
 	private func saveNote() {
-		note.date = Date()
-		try? context.save()
+		// if note text contains something except "space" or note has at least 1 image need to save it
+		// if not -> will delete empty note
+		if note.text.first(where: { $0 != " " }) != nil || note.imagesArray.count > 0 {
+			
+			// if it was new note without folder and other properties -> will add it
+			if note.folder == nil {
+				note.id = UUID()
+				note.isPined = false
+				note.isLocked = false
+				if let folderIndex = folders.firstIndex(where: { $0.name == "Notes" }) {
+					note.folder = folders[folderIndex]
+				}
+				print("New note was saved")
+			}
+			note.date = Date()
+			
+		} else {
+			// will find and delete note without text and images
+			for folder in folders {
+				if folder.notesArray.contains(note) {
+					folder.removeFromNotes(note)
+				}
+			}
+		}
+		
+		if viewContext.hasChanges {
+			try? viewContext.save()
+		}
 	}
 }
 

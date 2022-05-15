@@ -18,7 +18,6 @@ class FontStore: ObservableObject {
 	@Published private(set) var fontSettings = FontSettings() {
 		didSet {
 			storeInUserDefaults()
-			print(fontSettings.fontSize)
 		}
 	}
 	

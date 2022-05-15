@@ -8,6 +8,7 @@
 import SwiftUI
 
 extension View {
+	//add button for dissmiss to any view
 	func dismissableToolbar (_ dismiss: (() -> Void)?) -> some View {
 		self.toolbar {
 			ToolbarItem(placement: .navigationBarLeading) {
@@ -18,6 +19,11 @@ extension View {
 				}
 			}
 		}
+	}
+	
+	// filtering notes by string input from user
+	func filterNotes(_ notesArray: [Note] , by searchedText: String) -> [Note] {
+		notesArray.filter({ $0.text.lowercased().contains(searchedText.lowercased()) || searchedText == "" })
 	}
 }
 

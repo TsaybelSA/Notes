@@ -10,19 +10,15 @@ import CoreMIDI
 
 struct ContentView: View {
 	@Environment(\.managedObjectContext) var viewContext
-		
-	@Environment(\.editMode) var editMode
-		
+	@FetchRequest(sortDescriptors: []) var folders: FetchedResults<Folder>
+
 	@EnvironmentObject var fontStore: FontStore
-	
 	@EnvironmentObject var secureControl: SecureControl
 	
-	@FetchRequest(sortDescriptors: []) var folders: FetchedResults<Folder>
-		
+	@Environment(\.editMode) var editMode
+	
 	@State private var searchText = ""
-	
-	@State private var editingNote: Note?
-	
+		
 	@State private var showingGrid = false
 			
 	var body: some View {
@@ -49,9 +45,10 @@ struct ContentView: View {
 				}
 				ToolbarItemGroup(placement: .bottomBar) {
 					Text(countAmountOfNotes())
-					AnimatedActionButton(systemImage: "square.and.pencil") {
-						createNewNote()
-						editMode?.wrappedValue = .inactive
+					NavigationLink {
+						EditNoteView(note: Note(context: viewContext))
+					} label: {
+						Image(systemName: "square.and.pencil")
 					}
 				}
 			}
@@ -61,17 +58,9 @@ struct ContentView: View {
 				}
 			}
 			.environment(\.editMode, editMode)
-			.fullScreenCover(item: $editingNote) { note in
-				EditNoteView(note: note)
-			}
 		}
 	}
-	
-	
-	func filterNotes(_ notesArray: [Note] , by searchedText: String) -> [Note] {
-		notesArray.filter({ $0.text.lowercased().contains(searchedText.lowercased()) || searchedText == "" })
-	}
-	
+
 	private func countAmountOfNotes() -> String {
 		var count = 0
 		for folder in folders {
@@ -97,20 +86,5 @@ struct ContentView: View {
 		newNote.folder = unsorted
 		try? viewContext.save()
 	}
-	
-	private func createNewNote() {
-		let newNote = Note(context: viewContext)
-		newNote.text = ""
-		newNote.date = Date()
-		newNote.id = UUID()
-		newNote.isPined = false
-		newNote.isLocked = false
-		if let folderIndex = folders.firstIndex(where: { $0.name == "Notes" }) {
-			newNote.folder = folders[folderIndex]
-		}
-		try? viewContext.save()
-		editingNote = newNote
-	}
-
 }
 

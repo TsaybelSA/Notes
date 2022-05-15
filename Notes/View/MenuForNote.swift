@@ -76,6 +76,10 @@ struct DeleteButton: View {
 		for folder in folders {
 			if folder.notesArray.contains(note) {
 				folder.removeFromNotes(note)
+				for image in note.imagesArray {
+					note.removeFromImage(image)
+				}
+				note.text = ""
 				try? context.save()
 			}
 		}

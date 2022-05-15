@@ -55,7 +55,7 @@ func authenticate(ifSucceed: @escaping () -> Void) {
 		context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, authenticationError in
 			if success {
 				//authenticated successfully
-				
+				//run the code below 
 				ifSucceed()
 			} else {
 				//there was a problem

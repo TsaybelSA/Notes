@@ -33,53 +33,22 @@ struct GridLayout: View {
 									.contextMenu {
 										MenuForNote(note)
 									}
-									
 								}
-								
 							}
 						}
 					}
 				}
 			}
 		}
-
 	}
 	
 	@ViewBuilder
 	func gridLayoutNote(_ note: Note, from folder : Folder, with geo: GeometryProxy) -> some View {
 		Group {
 			if !note.isLocked || !secureControl.isLockedState {
-				HStack {
-					VStack {
-						if note.isLocked {
-							Image(systemName: "lock.open")
-						}
-						Text(note.text)
-							.font(.body)
-							.lineLimit(3)
-							.multilineTextAlignment(.leading)
-						Text(note.date.formatted(date: .long, time: .omitted))
-							.font(.caption)
-							.fontWeight(.light)
-						HStack {
-							ForEach(note.imagesArray, id: \.self) { image in
-								if let uiImage = UIImage(data: image.data) {
-									Image(uiImage: uiImage)
-										.resizable()
-										.aspectRatio(contentMode: .fit)
-										.frame(maxHeight: 100)
-								}
-							}
-						}
-					}
-			   }
-			   .padding()
+				unlockedNoteBody(note)
 			} else {
-				VStack(alignment: .center) {
-					Image(systemName: "lock")
-						.font(.title2)
-				}
-				.padding()
+				lockedNoteBody
 			}
 		}
 		.frame(width: geo.size.width * 0.45)
@@ -90,9 +59,41 @@ struct GridLayout: View {
 				.stroke(.gray)
 		}
 	}
-
-
-	func filterNotes(_ notesArray: [Note] , by searchedText: String) -> [Note] {
-		notesArray.filter({ $0.text.lowercased().contains(searchedText.lowercased()) || searchedText == "" })
+	
+	var lockedNoteBody: some View {
+		VStack(alignment: .center) {
+			Image(systemName: "lock")
+				.font(.title2)
+		}
+		.padding()
+	}
+	
+	
+	func unlockedNoteBody(_ note: Note) -> some View {
+		HStack {
+			VStack {
+				if note.isLocked {
+					Image(systemName: "lock.open")
+				}
+				Text(note.text)
+					.font(.body)
+					.lineLimit(3)
+					.multilineTextAlignment(.leading)
+				Text(note.date.formatted(date: .long, time: .omitted))
+					.font(.caption)
+					.fontWeight(.light)
+				HStack {
+					ForEach(note.imagesArray, id: \.self) { image in
+						if let uiImage = UIImage(data: image.data) {
+							Image(uiImage: uiImage)
+								.resizable()
+								.aspectRatio(contentMode: .fit)
+								.frame(maxHeight: 70)
+						}
+					}
+				}
+			}
+	   }
+	   .padding()
 	}
 }

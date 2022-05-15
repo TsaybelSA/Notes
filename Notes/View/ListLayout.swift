@@ -82,10 +82,6 @@ struct ListLayout: View {
 		}
 	}
 	
-	func filterNotes(_ notesArray: [Note] , by searchedText: String) -> [Note] {
-		notesArray.filter({ $0.text.lowercased().contains(searchedText.lowercased()) || searchedText == "" })
-	}
-	
 	private func deleteNotes(with indexSet: IndexSet, from folder: Folder) {
 		for index in indexSet {
 			withAnimation {
