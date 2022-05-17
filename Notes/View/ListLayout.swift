@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ListLayout: View {
-	@EnvironmentObject var secureControl: SecureControl
+	@EnvironmentObject var notesViewModel: ViewModel
 	@Environment(\.managedObjectContext) var viewContext
 	
 	@Binding var searchText: String
@@ -41,7 +41,7 @@ struct ListLayout: View {
 	
 	@ViewBuilder
 	func listLayoutNote(_ note: Note) -> some View {
-		if !note.isLocked || !secureControl.isLockedState {
+		if !note.isLocked || !notesViewModel.isLockedState {
 			HStack {
 				if note.isLocked {
 					Image(systemName: "lock.open")
@@ -86,10 +86,9 @@ struct ListLayout: View {
 		for index in indexSet {
 			withAnimation {
 				let note = folder.notesArray[index]
-				if note.isLocked && secureControl.isLockedState {
-					authenticate {
+				if note.isLocked && notesViewModel.isLockedState {
+					notesViewModel.authenticate {
 						folder.removeFromNotes(note)
-						secureControl.changeToUnlockedState()
 					}
 				} else {
 					folder.removeFromNotes(note)

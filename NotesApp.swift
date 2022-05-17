@@ -11,7 +11,7 @@ import SwiftUI
 struct NotesApp: App {
 	@StateObject private var dataController = DataController()
 	@State private var fontStore = FontStore()
-	@State private var secureControl = SecureControl()
+	@State private var notesViewModel = ViewModel()
 	
 	//by observing the changes in this parameter for the main screen
 	//can judge whether it is necessary to lock notes
@@ -20,7 +20,7 @@ struct NotesApp: App {
 	var body: some Scene {
 		WindowGroup {
 			ContentView()
-				.environmentObject(secureControl)
+				.environmentObject(notesViewModel)
 				.environmentObject(fontStore)
 				.environment(\.managedObjectContext, dataController.container.viewContext)
 		}
@@ -31,8 +31,8 @@ struct NotesApp: App {
 			//after changing scenePhase to "active" from "inactive" (it means app wasn`t closed)
 			//need to check had app been already unlocked, if so change "isLockState" to false
 			case .active:
-					if secureControl.wasUnlockedInCurrentSession == true {
-						secureControl.changeToUnlockedState()
+					if notesViewModel.wasUnlockedInCurrentSession == true {
+						notesViewModel.changeToUnlockedState()
 					}
 					print("ScenePhase: active")
 					
@@ -42,10 +42,10 @@ struct NotesApp: App {
 			//because current session was over
 			case .background:
 					print("ScenePhase: background")
-					secureControl.currentSessionIsOver()
-					secureControl.changeToLockedState()
+					notesViewModel.currentSessionIsOver()
+					notesViewModel.changeToLockedState()
 			case .inactive:
-					secureControl.changeToLockedState()
+					notesViewModel.changeToLockedState()
 					print("ScenePhase: inactive")
 			@unknown default: print("ScenePhase: unexpected state")
 			}

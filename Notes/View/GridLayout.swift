@@ -9,7 +9,7 @@ import SwiftUI
 
 struct GridLayout: View {
 	
-	@EnvironmentObject var secureControl: SecureControl
+	@EnvironmentObject var notesViewModel: ViewModel
 	
 	@Binding var searchText: String
 	let folders: FetchedResults<Folder>
@@ -45,7 +45,7 @@ struct GridLayout: View {
 	@ViewBuilder
 	func gridLayoutNote(_ note: Note, from folder : Folder, with geo: GeometryProxy) -> some View {
 		Group {
-			if !note.isLocked || !secureControl.isLockedState {
+			if !note.isLocked || !notesViewModel.isLockedState {
 				unlockedNoteBody(note)
 			} else {
 				lockedNoteBody

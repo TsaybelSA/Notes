@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct MenuForNote: View {
-	@Environment(\.managedObjectContext) var context
+	@Environment(\.managedObjectContext) var viewContext
 	
-	@EnvironmentObject var secureControl: SecureControl
+	@EnvironmentObject var notesViewModel: ViewModel
 
 	@FetchRequest(sortDescriptors: []) var folders: FetchedResults<Folder>
 	
@@ -29,19 +29,18 @@ struct MenuForNote: View {
 				note.isPined = true
 				note.folder = folders.first(where: { $0.name == "Pined" }) ?? folders.first
 			}
-			try? context.save()
+			try? viewContext.save()
 		}
 		
 		AnimatedActionButton(title: note.isLocked ? "Remove protection" : "Install Protection", systemImage: note.isLocked ? "lock.open": "lock") {
-			if secureControl.isLockedState {
-				authenticate {
+			if notesViewModel.isLockedState {
+				notesViewModel.authenticate {
 					note.isLocked.toggle()
-					secureControl.changeToUnlockedState()
 				}
 			} else {
 				note.isLocked.toggle()
 			}
-			try? context.save()
+			try? viewContext.save()
 		}
 		
 		DeleteButton(note: note)
@@ -51,24 +50,21 @@ struct MenuForNote: View {
 struct DeleteButton: View {
 	@Environment(\.managedObjectContext) var context
 	@FetchRequest(sortDescriptors: []) var folders: FetchedResults<Folder>
-	@EnvironmentObject var secureControl: SecureControl
+	@EnvironmentObject var notesViewModel: ViewModel
 	
 	@ObservedObject var note: Note
 	var action: (() -> Void)? = nil
 	
 	var body: some View {
 		AnimatedActionButton(role: .destructive, title: "Delete", systemImage: "trash") {
-			if note.isLocked && secureControl.isLockedState {
-				authenticate {
+			if note.isLocked && notesViewModel.isLockedState {
+				notesViewModel.authenticate {
 					deleteNote()
-					secureControl.changeToUnlockedState()
 				}
 			} else {
 				deleteNote()
 			}
-			if let action = action {
-				action()
-			}
+			action?()
 		}
     }
 	

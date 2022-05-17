@@ -13,7 +13,7 @@ struct ContentView: View {
 	@FetchRequest(sortDescriptors: []) var folders: FetchedResults<Folder>
 
 	@EnvironmentObject var fontStore: FontStore
-	@EnvironmentObject var secureControl: SecureControl
+	@EnvironmentObject var notesViewModel: ViewModel
 	
 	@Environment(\.editMode) var editMode
 	
@@ -40,6 +40,7 @@ struct ContentView: View {
 				}
 				ToolbarItem(placement: .navigationBarLeading) {
 					AnimatedActionButton(systemImage: showingGrid ? "list.dash" : "square.grid.2x2") {
+						editMode?.wrappedValue = .inactive
 						showingGrid.toggle()
 					}
 				}
@@ -57,8 +58,8 @@ struct ContentView: View {
 					createFirstFolders()
 				}
 			}
-			.environment(\.editMode, editMode)
 		}
+		.environment(\.editMode, editMode)
 	}
 
 	private func countAmountOfNotes() -> String {

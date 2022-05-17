@@ -15,7 +15,7 @@ struct EditNoteView: View {
 	@ObservedObject var note: Note
 	
 	@EnvironmentObject var fontStore: FontStore
-	@EnvironmentObject var secureControl: SecureControl
+	@EnvironmentObject var notesViewModel: ViewModel
 	
 	@Environment(\.dismiss) var dismiss
 	
@@ -36,30 +36,27 @@ struct EditNoteView: View {
     var body: some View {
 		GeometryReader { geo in
 			ScrollView {
-				VStack(alignment: .trailing) {
-					if !secureControl.isLockedState || !note.isLocked {
+				VStack {
+					if !notesViewModel.isLockedState || !note.isLocked {
 						unlockedNote(with: geo)
 					} else {
-						lockedNote
+						lockedNote(with: geo)
 							.transition(AnyTransition.opacity.animation(.spring()))
 					}
 				}
-				.frame(alignment: .center)
 			}
 			.navigationTitle(note.isLocked ? "" : "Edit Note")
 			.navigationBarTitleDisplayMode(.inline)
 			.toolbar {
 				ToolbarItemGroup(placement: .navigationBarTrailing) {
-					AnimatedActionButton(systemImage: secureControl.isLockedState ? "lock": "lock.open") {
-						if secureControl.isLockedState {
-							authenticate {
-								secureControl.changeToUnlockedState()
-							}
+					AnimatedActionButton(systemImage: notesViewModel.isLockedState ? "lock": "lock.open") {
+						if notesViewModel.isLockedState {
+							notesViewModel.authenticate()
 						} else {
-							secureControl.changeToLockedState()
+							notesViewModel.changeToLockedState()
 						}
 					}
-					if !secureControl.isLockedState || !note.isLocked {
+					if !notesViewModel.isLockedState || !note.isLocked {
 						Menu {
 							if Camera.isAvailable {
 								AnimatedActionButton(title: "Take a Photo", systemImage: "camera") {
@@ -114,30 +111,31 @@ struct EditNoteView: View {
 				.frame(minHeight: geo.size.height * 0.7, maxHeight: .infinity)
 			if !note.imagesArray.isEmpty {
 				lineDivider
-				imagesOfNote
-					.frame(maxHeight: geo.size.height * 0.25)
+				imagesOfNote(with: geo)
 			}
 		}
 	}
 	
-	var lockedNote: some View {
-		VStack {
-			Image(systemName: "lock")
-				.font(.largeTitle)
-			Text("Note is protected")
-				.font(.title3)
-				.padding(.vertical, 5)
-			Button("Remove protection") {
-				authenticate {
-					secureControl.changeToUnlockedState()
+	func lockedNote(with geo: GeometryProxy) -> some View {
+			VStack {
+				Spacer(minLength: geo.size.height * 0.35)
+				Image(systemName: "lock")
+					.font(.largeTitle)
+				Text("Note is protected")
+					.font(.title3)
+					.padding(.vertical, 5)
+				Button("Remove protection") {
+					notesViewModel.authenticate()
 				}
+				.font(.title3)
+				Spacer()
+
 			}
-			.font(.title3)
-		}
-		.padding()
+			.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+			.padding()
 	}
 	
-	var imagesOfNote: some View {
+	func imagesOfNote(with geo: GeometryProxy) -> some View {
 		ScrollView(.horizontal) {
 			HStack(alignment: .bottom, spacing: 10) {
 				ForEach(note.imagesArray) { noteImage in
@@ -146,6 +144,7 @@ struct EditNoteView: View {
 							.resizable()
 							.scaledToFit()
 							.opacity(selectedImageID == noteImage.id ? 0.8 : 1)
+							.frame(maxHeight: geo.size.height * 0.2)
 							.padding(.horizontal, 10)
 							.overlay {
 								if noteImage.id == selectedImageID {
@@ -216,7 +215,6 @@ struct EditNoteView: View {
 		var id: ImagePickerType { self }
 	}
 	
-	//MARK: note are not updating image after reuploading it
 	private func handlePickerImage(_ image: UIImage?) {
 		if let pickedImage = image?.jpegData(compressionQuality: 0.4) {
 			let image = NoteImage(context: viewContext)
