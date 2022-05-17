@@ -44,26 +44,3 @@ extension Array where Element == NSItemProvider {
 	}
 }
 
-
-
-func authenticate(ifSucceed: @escaping () -> Void) {
-	let context = LAContext()
-	var error: NSError?
-	if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-		let reason = "We need it to control access to notes"
-		
-		context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, authenticationError in
-			if success {
-				//authenticated successfully
-				//run the code below 
-				ifSucceed()
-			} else {
-				//there was a problem
-				
-			}
-		}
-	} else {
-		//no biometrics
-		
-	}
-}

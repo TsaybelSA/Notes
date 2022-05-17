@@ -21,6 +21,11 @@ class ViewModel: ObservableObject {
 		}
 	}
 	
+	@Published var showingAlert = false
+	@Published var alertTitle = ""
+	@Published var alertMessage = ""
+
+	
 	func currentSessionIsOver() {
 		wasUnlockedInCurrentSession = false
 	}
@@ -48,12 +53,21 @@ class ViewModel: ObservableObject {
 					ifSucceed?()
 				} else {
 					//there was a problem
-					
+					// only for learning
+//					Task { @MainActor in
+//						self.alertTitle = "Failed to authenticate with biometrics!"
+//						self.alertMessage = "Please try again."
+//						self.showingAlert = true
+//					}
 				}
 			}
 		} else {
 			//no biometrics
-			
+			Task { @MainActor in
+				alertTitle = "Failed to authenticate with biometrics!"
+				alertMessage = "Check settings of Notes App to give permission."
+				showingAlert = true
+			}
 		}
 	}
 	

@@ -58,6 +58,11 @@ struct ContentView: View {
 					createFirstFolders()
 				}
 			}
+			.alert(notesViewModel.alertTitle, isPresented: $notesViewModel.showingAlert) {
+				Button("OK") { }
+			} message: {
+				Text(notesViewModel.alertMessage)
+			}
 		}
 		.environment(\.editMode, editMode)
 	}
