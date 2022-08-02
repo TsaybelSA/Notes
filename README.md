@@ -1,5 +1,5 @@
 # Notes
-Minimalistic notes app
+Minimalistic SwiftUI notes app
 ### Description
 First fully self-made app, started like tech task from emplyer and grown to project where I wanted to build something similar with standart Apple notes app.
 ## Features
