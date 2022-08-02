@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct MenuForNote: View {
-	@Environment(\.managedObjectContext) var context
+	@Environment(\.managedObjectContext) var viewContext
+	
+	@EnvironmentObject var notesViewModel: ViewModel
 
 	@FetchRequest(sortDescriptors: []) var folders: FetchedResults<Folder>
 	
-	var note: Note
+	@ObservedObject var note: Note
 	
 	init(_ note: Note) {
 		self.note = note
@@ -27,38 +29,56 @@ struct MenuForNote: View {
 				note.isPined = true
 				note.folder = folders.first(where: { $0.name == "Pined" }) ?? folders.first
 			}
-			try? context.save()
+			try? viewContext.save()
 		}
+		
+		AnimatedActionButton(title: note.isLocked ? "Remove protection" : "Install Protection", systemImage: note.isLocked ? "lock.open": "lock") {
+			if notesViewModel.isLockedState {
+				notesViewModel.authenticate {
+					note.isLocked.toggle()
+				}
+			} else {
+				note.isLocked.toggle()
+			}
+			try? viewContext.save()
+		}
+		
+		DeleteButton(note: note)
+	}
+}
 
-		AnimatedActionButton(title: "Delete", systemImage: "trash") {
-			if note.isLocked {
-				authenticate {
+struct DeleteButton: View {
+	@Environment(\.managedObjectContext) var context
+	@FetchRequest(sortDescriptors: []) var folders: FetchedResults<Folder>
+	@EnvironmentObject var notesViewModel: ViewModel
+	
+	@ObservedObject var note: Note
+	var action: (() -> Void)? = nil
+	
+	var body: some View {
+		AnimatedActionButton(role: .destructive, title: "Delete", systemImage: "trash") {
+			if note.isLocked && notesViewModel.isLockedState {
+				notesViewModel.authenticate {
 					deleteNote()
 				}
 			} else {
 				deleteNote()
 			}
-		}
-		
-		AnimatedActionButton(title: note.isLocked ? "Remove protection" : "Install Protection", systemImage: note.isLocked ? "lock.open": "lock") {
-			authenticate {
-				note.isLocked.toggle()
-			}
-			try? context.save()
+			action?()
 		}
     }
+	
 	private func deleteNote() {
 		for folder in folders {
 			if folder.notesArray.contains(note) {
 				folder.removeFromNotes(note)
+				for image in note.imagesArray {
+					note.removeFromImage(image)
+				}
+				note.text = ""
 				try? context.save()
 			}
 		}
 	}
 }
 
-//struct MenuForNote_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MenuForNote()
-//    }
-//}

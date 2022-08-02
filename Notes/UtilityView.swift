@@ -6,41 +6,49 @@
 //
 
 import SwiftUI
-import LocalAuthentication
 
 extension View {
+	//add button for dissmiss to any view
 	func dismissableToolbar (_ dismiss: (() -> Void)?) -> some View {
 		self.toolbar {
 			ToolbarItem(placement: .navigationBarLeading) {
 				if let dismiss = dismiss {
-					Button("Save") {
+					Button("Close") {
 						dismiss()
 					}
 				}
 			}
 		}
 	}
+	
+	// filtering notes by string input from user
+	func filterNotes(_ notesArray: [Note] , by searchedText: String) -> [Note] {
+		notesArray.filter({ $0.text.lowercased().contains(searchedText.lowercased()) || searchedText == "" })
+	}
 }
 
 struct AnimatedActionButton: View {
+	var role: ButtonRole? = nil
 	var title: String? = nil
 	var systemImage: String? = nil
 	let action: () -> Void
-	
 	var body: some View {
-		Button {
+		Button (role: role) {
 			withAnimation {
 				action()
 			}
 		} label: {
-			if title != nil && systemImage != nil {
-				Label(title!, systemImage: systemImage!)
-			} else if title != nil {
-				Text(title!)
-			} else if systemImage != nil {
-				Image(systemName: systemImage!)
+			Group {
+				if title != nil && systemImage != nil {
+					Label(title!, systemImage: systemImage!)
+				} else if title != nil {
+					Text(title!)
+				} else if systemImage != nil {
+					Image(systemName: systemImage!)
+				}
 			}
 		}
+		
 	}
 }
 
@@ -61,23 +69,3 @@ extension View {
 	}
 }
 
-func authenticate(ifSucceed: @escaping () -> Void) {
-	let context = LAContext()
-	var error: NSError?
-	if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-		let reason = "We need it to control access to notes"
-		
-		context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, authenticationError in
-			if success {
-				//authenticated successfully
-//				isUnlocked = true
-				ifSucceed()
-			} else {
-				//there was a problem
-			}
-		}
-	} else {
-		//no biometrics
-		
-	}
-}

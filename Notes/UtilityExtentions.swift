@@ -5,27 +5,9 @@
 //  Created by Сергей Цайбель on 13.04.2022.
 //
 
+import LocalAuthentication
+
 import SwiftUI
-
-
-//MARK: convert date
-func convertDateToDateString(date: Date, format: String) -> String {
-	let dateFormatter = DateFormatter()
-	dateFormatter.locale = Locale(identifier: "ru_RU")
-	dateFormatter.dateFormat = format
-	dateFormatter.calendar = Calendar(identifier: .iso8601)
-
-	let resultDate = dateFormatter.string(from: date)
-	return resultDate
-}
-//
-//extension UIImage {
-//	
-//	var toData: Data? {
-//		return pngData()
-//	}
-//}
-
 
 extension Array where Element == NSItemProvider {
 	func loadObjects<T>(ofType theType: T.Type, firstOnly: Bool = false, using load: @escaping (T) -> Void) -> Bool where T: NSItemProviderReading {
@@ -61,3 +43,4 @@ extension Array where Element == NSItemProvider {
 		loadObjects(ofType: theType, firstOnly: true, using: load)
 	}
 }
+

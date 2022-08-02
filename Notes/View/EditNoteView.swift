@@ -8,11 +8,14 @@
 import SwiftUI
 
 struct EditNoteView: View {
-	@Environment(\.managedObjectContext) var context
+	
+	@Environment(\.managedObjectContext) var viewContext
+	@FetchRequest(sortDescriptors: []) var folders: FetchedResults<Folder>
 	
 	@ObservedObject var note: Note
 	
 	@EnvironmentObject var fontStore: FontStore
+	@EnvironmentObject var notesViewModel: ViewModel
 	
 	@Environment(\.dismiss) var dismiss
 	
@@ -26,56 +29,55 @@ struct EditNoteView: View {
 		return italic == true ? font.italic() : font
 	}
 	
-	@State private var imageIsChosen = false
+	@State private var selectedImageID: UUID?
+	
 	@FocusState private var textIsFocused: Bool
 	
     var body: some View {
-		NavigationView {
-			ZStack {
-				if !note.isLocked {
-					VStack {
-						TextEditor(text: $note.text)
-							.lineSpacing(3)
-							.font(displayFont)
-							.padding()
-							.focused($textIsFocused)
-						HStack {
-							imageOfNote
-								.onTapGesture {
-									withAnimation {
-										imageIsChosen.toggle()
-									}
-								}
-						}
+		GeometryReader { geo in
+			ScrollView {
+				VStack {
+					if !notesViewModel.isLockedState || !note.isLocked {
+						unlockedNote(with: geo)
+					} else {
+						lockedNote(with: geo)
+							.transition(AnyTransition.opacity.animation(.spring()))
 					}
-				} else {
-					lockedNote
-						.transition(AnyTransition.scale)
 				}
-				
 			}
-			.dismissableToolbar() {
-				dismiss()
-			}
+			.navigationTitle(note.isLocked ? "" : "Edit Note")
+			.navigationBarTitleDisplayMode(.inline)
 			.toolbar {
 				ToolbarItemGroup(placement: .navigationBarTrailing) {
-					AnimatedActionButton(systemImage: "ellipsis.circle") {
-					}
-					.contextMenu {
-						if Camera.isAvailable {
-							AnimatedActionButton(title: "Take a Photo", systemImage: "camera") {
-								imagePicker = .camera
-							}
+					AnimatedActionButton(systemImage: notesViewModel.isLockedState ? "lock": "lock.open") {
+						if notesViewModel.isLockedState {
+							notesViewModel.authenticate()
+						} else {
+							notesViewModel.changeToLockedState()
 						}
-						if PhotoLibrary.isAvailable {
-							AnimatedActionButton(title: "Chose a Photo", systemImage: "photo") {
-								imagePicker = .library
+					}
+					if !notesViewModel.isLockedState || !note.isLocked {
+						Menu {
+							if Camera.isAvailable {
+								AnimatedActionButton(title: "Take a Photo", systemImage: "camera") {
+									imagePicker = .camera
+								}
 							}
+							if PhotoLibrary.isAvailable {
+								AnimatedActionButton(title: "Chose a Photo", systemImage: "photo") {
+									imagePicker = .library
+								}
+							}
+							DeleteButton(note: note) {
+								dismiss()
+							}
+						} label: {
+							Image(systemName: "ellipsis.circle")
 						}
 					}
 				}
 				ToolbarItemGroup(placement: .keyboard) {
-					buttonsList
+					keyboardButtons
 				}
 			}
 			
@@ -96,56 +98,87 @@ struct EditNoteView: View {
 				 saveNote()
 				 saveFont(withSize: fontSize, bold: bold, italic: italic)
 			 }
-			 .navigationTitle(note.isLocked ? "" : "Edit Note")
-
 		}
 	}
 	
-	var lockedNote: some View {
-		ZStack {
+	func unlockedNote(with geo: GeometryProxy) -> some View {
+		VStack {
+			TextEditor(text: $note.text)
+				.lineSpacing(3)
+				.font(displayFont)
+				.padding()
+				.focused($textIsFocused)
+				.frame(minHeight: geo.size.height * 0.7, maxHeight: .infinity)
+			if !note.imagesArray.isEmpty {
+				lineDivider
+				imagesOfNote(with: geo)
+			}
+		}
+	}
+	
+	func lockedNote(with geo: GeometryProxy) -> some View {
 			VStack {
-				Spacer()
+				Spacer(minLength: geo.size.height * 0.35)
 				Image(systemName: "lock")
 					.font(.largeTitle)
 				Text("Note is protected")
 					.font(.title3)
 					.padding(.vertical, 5)
 				Button("Remove protection") {
-					authenticate {
-						note.isLocked.toggle()
-					}
+					notesViewModel.authenticate()
 				}
 				.font(.title3)
-				.padding(.vertical, 5)
 				Spacer()
-			}
-		}
-		.frame(maxWidth: .infinity, maxHeight: .infinity)
-		.background(.ultraThickMaterial)
 
+			}
+			.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+			.padding()
 	}
 	
-	@ViewBuilder
-	var imageOfNote: some View {
-		if let data = note.images, let uiImage = UIImage(data: data as Data) {
-			Image(uiImage: uiImage)
-				.resizable()
-				.aspectRatio(contentMode: .fit)
-				.opacity(imageIsChosen ? 0.8 : 1)
-				.padding()
-				.overlay {
-					if imageIsChosen {
-						AnimatedActionButton(title: "Delete Image") {
-							note.images = nil
-							imageIsChosen = false
-						}
-						.borderedCaption()
+	func imagesOfNote(with geo: GeometryProxy) -> some View {
+		ScrollView(.horizontal) {
+			HStack(alignment: .bottom, spacing: 10) {
+				ForEach(note.imagesArray) { noteImage in
+					if let uiImage = UIImage(data: noteImage.data) {
+						Image(uiImage: uiImage)
+							.resizable()
+							.scaledToFit()
+							.opacity(selectedImageID == noteImage.id ? 0.8 : 1)
+							.frame(maxHeight: geo.size.height * 0.2)
+							.padding(.horizontal, 10)
+							.overlay {
+								if noteImage.id == selectedImageID {
+									AnimatedActionButton(title: "Delete Image") {
+										note.removeFromImage(noteImage)
+										selectedImageID = nil
+									}
+									.borderedCaption()
+								}
+							}
+							.onTapGesture {
+								withAnimation {
+									if selectedImageID == noteImage.id {
+										selectedImageID = nil
+									} else {
+										selectedImageID = noteImage.id
+									}
+								}
+							}
 					}
 				}
+			}
 		}
+		.padding(.bottom)
 	}
 	
-	var buttonsList: some View {
+	var lineDivider: some View {
+		Rectangle()
+			.frame(height: 2)
+			.foregroundColor(.gray)
+			.padding(.vertical)
+	}
+	
+	var keyboardButtons: some View {
 		HStack {
 			Toggle(isOn: $bold) {
 				Image(systemName: "bold")
@@ -182,13 +215,19 @@ struct EditNoteView: View {
 		var id: ImagePickerType { self }
 	}
 	
-	//MARK: note are not updating image after reuploading it
 	private func handlePickerImage(_ image: UIImage?) {
-		let pickedImage = image?.jpegData(compressionQuality: 0.5)
-		note.images = pickedImage as NSData?
-		try? context.save()
+		if let pickedImage = image?.jpegData(compressionQuality: 0.4) {
+			let image = NoteImage(context: viewContext)
+			image.id = UUID()
+			image.date = Date()
+			image.data = pickedImage
+			note.addToImage(image)
+			if viewContext.hasChanges {
+				try? viewContext.save()
+				note.objectWillChange.send()
+			}
+		}
 		imagePicker = nil
-		note.objectWillChange.send()
 	}
 						   
 	private func saveFont(withSize fontSize: Int, bold: Bool, italic: Bool) {
@@ -196,8 +235,34 @@ struct EditNoteView: View {
 	}
 	
 	private func saveNote() {
-		note.date = Date()
-		try? context.save()
+		// if note text contains something except "space" or note has at least 1 image need to save it
+		// if not -> will delete empty note
+		if note.text.first(where: { $0 != " " }) != nil || note.imagesArray.count > 0 {
+			
+			// if it was new note without folder and other properties -> will add it
+			if note.folder == nil {
+				note.id = UUID()
+				note.isPined = false
+				note.isLocked = false
+				if let folderIndex = folders.firstIndex(where: { $0.name == "Notes" }) {
+					note.folder = folders[folderIndex]
+				}
+				print("New note was saved")
+			}
+			note.date = Date()
+			
+		} else {
+			// will find and delete note without text and images
+			for folder in folders {
+				if folder.notesArray.contains(note) {
+					folder.removeFromNotes(note)
+				}
+			}
+		}
+		
+		if viewContext.hasChanges {
+			try? viewContext.save()
+		}
 	}
 }
 

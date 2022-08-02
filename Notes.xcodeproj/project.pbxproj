@@ -15,18 +15,20 @@
 		17A77480281ADA000067F2B3 /* UtilityExtentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A7747F281ADA000067F2B3 /* UtilityExtentions.swift */; };
 		17A77482281ADA210067F2B3 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A77481281ADA210067F2B3 /* DataController.swift */; };
 		17A77484281ADB8D0067F2B3 /* FontStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A77483281ADB8D0067F2B3 /* FontStore.swift */; };
-		17A7748C281ADBA00067F2B3 /* FlexibleSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A77485281ADBA00067F2B3 /* FlexibleSheet.swift */; };
 		17A7748D281ADBA00067F2B3 /* MenuForNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A77486281ADBA00067F2B3 /* MenuForNote.swift */; };
-		17A7748E281ADBA00067F2B3 /* FilteredList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A77487281ADBA00067F2B3 /* FilteredList.swift */; };
 		17A7748F281ADBA00067F2B3 /* PhotoLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A77488281ADBA00067F2B3 /* PhotoLibrary.swift */; };
 		17A77490281ADBA00067F2B3 /* EditNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A77489281ADBA00067F2B3 /* EditNoteView.swift */; };
 		17A77491281ADBA00067F2B3 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A7748A281ADBA00067F2B3 /* Camera.swift */; };
-		17A77492281ADBA00067F2B3 /* NoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A7748B281ADBA00067F2B3 /* NoteView.swift */; };
 		17A77498281ADC630067F2B3 /* NotesBase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 17A77496281ADC630067F2B3 /* NotesBase.xcdatamodeld */; };
-		17A774A9281B563D0067F2B3 /* Note+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A774A5281B563D0067F2B3 /* Note+CoreDataClass.swift */; };
-		17A774AA281B563D0067F2B3 /* Note+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A774A6281B563D0067F2B3 /* Note+CoreDataProperties.swift */; };
-		17A774AB281B563D0067F2B3 /* Folder+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A774A7281B563D0067F2B3 /* Folder+CoreDataClass.swift */; };
-		17A774AC281B563D0067F2B3 /* Folder+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A774A8281B563D0067F2B3 /* Folder+CoreDataProperties.swift */; };
+		17A774DF281BE5590067F2B3 /* NoteImage+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A774D9281BE5590067F2B3 /* NoteImage+CoreDataClass.swift */; };
+		17A774E0281BE5590067F2B3 /* NoteImage+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A774DA281BE5590067F2B3 /* NoteImage+CoreDataProperties.swift */; };
+		17A774E1281BE5590067F2B3 /* Folder+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A774DB281BE5590067F2B3 /* Folder+CoreDataClass.swift */; };
+		17A774E2281BE5590067F2B3 /* Folder+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A774DC281BE5590067F2B3 /* Folder+CoreDataProperties.swift */; };
+		17A774E3281BE5590067F2B3 /* Note+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A774DD281BE5590067F2B3 /* Note+CoreDataClass.swift */; };
+		17A774E4281BE5590067F2B3 /* Note+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A774DE281BE5590067F2B3 /* Note+CoreDataProperties.swift */; };
+		17A77502281C25D50067F2B3 /* SecureControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A77501281C25D50067F2B3 /* SecureControl.swift */; };
+		17E5FF6C282FBFBA00D303B1 /* GridLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E5FF6B282FBFBA00D303B1 /* GridLayout.swift */; };
+		17E5FF70282FF8CD00D303B1 /* ListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E5FF6F282FF8CD00D303B1 /* ListLayout.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,18 +41,20 @@
 		17A7747F281ADA000067F2B3 /* UtilityExtentions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityExtentions.swift; sourceTree = "<group>"; };
 		17A77481281ADA210067F2B3 /* DataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		17A77483281ADB8D0067F2B3 /* FontStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontStore.swift; sourceTree = "<group>"; };
-		17A77485281ADBA00067F2B3 /* FlexibleSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlexibleSheet.swift; sourceTree = "<group>"; };
 		17A77486281ADBA00067F2B3 /* MenuForNote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuForNote.swift; sourceTree = "<group>"; };
-		17A77487281ADBA00067F2B3 /* FilteredList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilteredList.swift; sourceTree = "<group>"; };
 		17A77488281ADBA00067F2B3 /* PhotoLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibrary.swift; sourceTree = "<group>"; };
 		17A77489281ADBA00067F2B3 /* EditNoteView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditNoteView.swift; sourceTree = "<group>"; };
 		17A7748A281ADBA00067F2B3 /* Camera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
-		17A7748B281ADBA00067F2B3 /* NoteView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteView.swift; sourceTree = "<group>"; };
 		17A77497281ADC630067F2B3 /* NotesBase.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NotesBase.xcdatamodel; sourceTree = "<group>"; };
-		17A774A5281B563D0067F2B3 /* Note+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Note+CoreDataClass.swift"; sourceTree = "<group>"; };
-		17A774A6281B563D0067F2B3 /* Note+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Note+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		17A774A7281B563D0067F2B3 /* Folder+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folder+CoreDataClass.swift"; sourceTree = "<group>"; };
-		17A774A8281B563D0067F2B3 /* Folder+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folder+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		17A774D9281BE5590067F2B3 /* NoteImage+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NoteImage+CoreDataClass.swift"; sourceTree = "<group>"; };
+		17A774DA281BE5590067F2B3 /* NoteImage+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NoteImage+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		17A774DB281BE5590067F2B3 /* Folder+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folder+CoreDataClass.swift"; sourceTree = "<group>"; };
+		17A774DC281BE5590067F2B3 /* Folder+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folder+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		17A774DD281BE5590067F2B3 /* Note+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Note+CoreDataClass.swift"; sourceTree = "<group>"; };
+		17A774DE281BE5590067F2B3 /* Note+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Note+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		17A77501281C25D50067F2B3 /* SecureControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureControl.swift; sourceTree = "<group>"; };
+		17E5FF6B282FBFBA00D303B1 /* GridLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridLayout.swift; sourceTree = "<group>"; };
+		17E5FF6F282FF8CD00D303B1 /* ListLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListLayout.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +111,12 @@
 		17A77493281ADBA80067F2B3 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				17A774D9281BE5590067F2B3 /* NoteImage+CoreDataClass.swift */,
+				17A774DA281BE5590067F2B3 /* NoteImage+CoreDataProperties.swift */,
+				17A774DB281BE5590067F2B3 /* Folder+CoreDataClass.swift */,
+				17A774DC281BE5590067F2B3 /* Folder+CoreDataProperties.swift */,
+				17A774DD281BE5590067F2B3 /* Note+CoreDataClass.swift */,
+				17A774DE281BE5590067F2B3 /* Note+CoreDataProperties.swift */,
 				17A77496281ADC630067F2B3 /* NotesBase.xcdatamodeld */,
 			);
 			path = Model;
@@ -115,11 +125,8 @@
 		17A77494281ADBB00067F2B3 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				17A77501281C25D50067F2B3 /* SecureControl.swift */,
 				17A77483281ADB8D0067F2B3 /* FontStore.swift */,
-				17A774A5281B563D0067F2B3 /* Note+CoreDataClass.swift */,
-				17A774A6281B563D0067F2B3 /* Note+CoreDataProperties.swift */,
-				17A774A7281B563D0067F2B3 /* Folder+CoreDataClass.swift */,
-				17A774A8281B563D0067F2B3 /* Folder+CoreDataProperties.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -127,13 +134,12 @@
 		17A77495281ADBB60067F2B3 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				17A7748B281ADBA00067F2B3 /* NoteView.swift */,
+				17A77454281AC9E40067F2B3 /* ContentView.swift */,
+				17E5FF6F282FF8CD00D303B1 /* ListLayout.swift */,
+				17E5FF6B282FBFBA00D303B1 /* GridLayout.swift */,
 				17A77486281ADBA00067F2B3 /* MenuForNote.swift */,
-				17A77485281ADBA00067F2B3 /* FlexibleSheet.swift */,
-				17A77487281ADBA00067F2B3 /* FilteredList.swift */,
 				17A77489281ADBA00067F2B3 /* EditNoteView.swift */,
 				17A77488281ADBA00067F2B3 /* PhotoLibrary.swift */,
-				17A77454281AC9E40067F2B3 /* ContentView.swift */,
 				17A7748A281ADBA00067F2B3 /* Camera.swift */,
 			);
 			path = View;
@@ -209,24 +215,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				17A774AB281B563D0067F2B3 /* Folder+CoreDataClass.swift in Sources */,
+				17A774E1281BE5590067F2B3 /* Folder+CoreDataClass.swift in Sources */,
 				17A77498281ADC630067F2B3 /* NotesBase.xcdatamodeld in Sources */,
-				17A7748C281ADBA00067F2B3 /* FlexibleSheet.swift in Sources */,
 				17A77482281ADA210067F2B3 /* DataController.swift in Sources */,
 				17A77490281ADBA00067F2B3 /* EditNoteView.swift in Sources */,
 				17A7748F281ADBA00067F2B3 /* PhotoLibrary.swift in Sources */,
-				17A7748E281ADBA00067F2B3 /* FilteredList.swift in Sources */,
+				17A774E0281BE5590067F2B3 /* NoteImage+CoreDataProperties.swift in Sources */,
 				17A77455281AC9E40067F2B3 /* ContentView.swift in Sources */,
+				17E5FF6C282FBFBA00D303B1 /* GridLayout.swift in Sources */,
+				17A774E4281BE5590067F2B3 /* Note+CoreDataProperties.swift in Sources */,
 				17A7747E281AD9A00067F2B3 /* UtilityView.swift in Sources */,
+				17A774DF281BE5590067F2B3 /* NoteImage+CoreDataClass.swift in Sources */,
+				17A77502281C25D50067F2B3 /* SecureControl.swift in Sources */,
 				17A77453281AC9E40067F2B3 /* NotesApp.swift in Sources */,
-				17A774AA281B563D0067F2B3 /* Note+CoreDataProperties.swift in Sources */,
 				17A77491281ADBA00067F2B3 /* Camera.swift in Sources */,
+				17A774E2281BE5590067F2B3 /* Folder+CoreDataProperties.swift in Sources */,
+				17E5FF70282FF8CD00D303B1 /* ListLayout.swift in Sources */,
 				17A77484281ADB8D0067F2B3 /* FontStore.swift in Sources */,
-				17A774AC281B563D0067F2B3 /* Folder+CoreDataProperties.swift in Sources */,
-				17A77492281ADBA00067F2B3 /* NoteView.swift in Sources */,
-				17A774A9281B563D0067F2B3 /* Note+CoreDataClass.swift in Sources */,
 				17A7748D281ADBA00067F2B3 /* MenuForNote.swift in Sources */,
 				17A77480281ADA000067F2B3 /* UtilityExtentions.swift in Sources */,
+				17A774E3281BE5590067F2B3 /* Note+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -358,6 +366,9 @@
 				DEVELOPMENT_TEAM = XY2J735A6H;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "The media library can be used to add image to your note.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "The camera can be used to add photo to your note.";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Use Face ID to limit access to the notes.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -387,6 +398,9 @@
 				DEVELOPMENT_TEAM = XY2J735A6H;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "The media library can be used to add image to your note.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "The camera can be used to add photo to your note.";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Use Face ID to limit access to the notes.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

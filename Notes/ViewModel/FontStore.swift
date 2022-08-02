@@ -12,13 +12,12 @@ struct FontSettings: Codable {
 	var bold = false
 	var italic = false
 }
-
+//using viewModel for keep and save font properties
 class FontStore: ObservableObject {
 										// (fontSize, bold, italic)
 	@Published private(set) var fontSettings = FontSettings() {
 		didSet {
 			storeInUserDefaults()
-			print(fontSettings.fontSize)
 		}
 	}
 	

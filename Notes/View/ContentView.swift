@@ -10,56 +10,46 @@ import CoreMIDI
 
 struct ContentView: View {
 	@Environment(\.managedObjectContext) var viewContext
-	
-	@EnvironmentObject var fontStore: FontStore
-	
 	@FetchRequest(sortDescriptors: []) var folders: FetchedResults<Folder>
-		
-	@State private var searchText = ""
+
+	@EnvironmentObject var fontStore: FontStore
+	@EnvironmentObject var notesViewModel: ViewModel
 	
 	@Environment(\.editMode) var editMode
 	
-	@State private var editingNote: Note?
+	@State private var searchText = ""
+		
+	@State private var showingGrid = false
 			
-	
-	//MARK: fix searching
 	var body: some View {
 		NavigationView {
-			List {
-				ForEach(folders.reversed(), id:\.self) { folder in
-					if !folder.notesArray.isEmpty {
-						Section(header: Text(folder.name)) {
-							ForEach(filterNotes(folder.notesArray, by: searchText)) { note in
-								NoteView(note)
-								.onTapGesture {
-									withAnimation {
-										editingNote = note
-										editMode?.wrappedValue = .inactive
-									}
-								}
-								.contextMenu {
-									MenuForNote(note)
-								}
-							}
-							.onDelete { indexSet in
-								deleteNotes(with: indexSet, from: folder)
-							}
-							
-						}
-					}
+			ZStack {
+				if showingGrid {
+					GridLayout(searchText: $searchText, folders: folders)
+						.transition(.asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .trailing)))
+				} else {
+					ListLayout(searchText: $searchText, folders: folders)
+						.transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
 				}
-
 			}
+			.searchable(text: $searchText)
+			.navigationTitle("My Notes")
 			.toolbar {
 				ToolbarItem(placement: .navigationBarTrailing) {
-					EditButton()
+					showingGrid ? nil : EditButton()
+				}
+				ToolbarItem(placement: .navigationBarLeading) {
+					AnimatedActionButton(systemImage: showingGrid ? "list.dash" : "square.grid.2x2") {
+						editMode?.wrappedValue = .inactive
+						showingGrid.toggle()
+					}
 				}
 				ToolbarItemGroup(placement: .bottomBar) {
-					
 					Text(countAmountOfNotes())
-					AnimatedActionButton(systemImage: "square.and.pencil") {
-						createNewNote()
-						editMode?.wrappedValue = .inactive
+					NavigationLink {
+						EditNoteView(note: Note(context: viewContext))
+					} label: {
+						Image(systemName: "square.and.pencil")
 					}
 				}
 			}
@@ -68,21 +58,15 @@ struct ContentView: View {
 					createFirstFolders()
 				}
 			}
-			.environment(\.editMode, editMode)
-			.fullScreenCover(item: $editingNote) { note in
-				EditNoteView(note: note)
+			.alert(notesViewModel.alertTitle, isPresented: $notesViewModel.showingAlert) {
+				Button("OK") { }
+			} message: {
+				Text(notesViewModel.alertMessage)
 			}
-			.searchable(text: $searchText)
-			.navigationTitle("My Notes")
 		}
-
-
+		.environment(\.editMode, editMode)
 	}
-	
-	private func filterNotes(_ notesArray: [Note] , by searchedText: String) -> [Note] {
-		notesArray.filter({ $0.text.lowercased().contains(searchedText.lowercased()) || searchedText == "" })
-	}
-	
+
 	private func countAmountOfNotes() -> String {
 		var count = 0
 		for folder in folders {
@@ -92,39 +76,21 @@ struct ContentView: View {
 		return notesCount
 	}
 	
-	private func deleteNotes(with indexSet: IndexSet, from folder: Folder) {
-		for index in indexSet {
-			withAnimation {
-				let note = folder.notesArray[index]
-				authenticate {
-					folder.removeFromNotes(note)
-				}
-			}
-		}
-		try? viewContext.save()
-	}
+
 	
 	private func createFirstFolders() {
 		let pined = Folder(context: viewContext)
 		pined.name = "Pined"
 		let unsorted = Folder(context: viewContext)
 		unsorted.name = "Notes"
-		try? viewContext.save()
-	}
-	
-	private func createNewNote() {
 		let newNote = Note(context: viewContext)
-		newNote.text = ""
+		newNote.text = "Welcome to Notes. To create new note tap icon in the right corner. You can open context menu by long pressing on note."
 		newNote.date = Date()
 		newNote.id = UUID()
 		newNote.isPined = false
 		newNote.isLocked = false
-		if let folderIndex = folders.firstIndex(where: { $0.name == "Notes" }) {
-			newNote.folder = folders[folderIndex]
-		}
+		newNote.folder = unsorted
 		try? viewContext.save()
-		editingNote = newNote
 	}
-
 }
 
